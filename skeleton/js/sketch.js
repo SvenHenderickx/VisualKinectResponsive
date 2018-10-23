@@ -2,9 +2,9 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.45.247"; 
+let kinectronIpAddress = "145.93.182.29"; 
 
-// declare kinectron 
+// declare kinectron
 let kinectron = null;
 
 // drawHand variables
@@ -25,7 +25,7 @@ let recorded_data_file = "./js/recorded_skeleton.json";
 
 
 function preload() {
-  
+
   if (!liveData) {
     recorded_skeleton = loadJSON(recorded_data_file);
   }
@@ -48,8 +48,8 @@ function draw() {
 
 
 function loopRecordedData() {
-  
-  // send data every 20 seconds 
+
+  // send data every 20 seconds
   if (Date.now() > sentTime + 20) {
     bodyTracked(recorded_skeleton[currentFrame])
     sentTime = Date.now();
@@ -89,8 +89,8 @@ function bodyTracked(body) {
 	setupRain(joint);
 
     // get the hands off the tracked body and do somethign with them
-    
-    // find right hand 
+
+    // find right hand
     if (jointType == 11) {
       hands.rightHand = joint;
       hands.rightHandState = translateHandState(body.rightHandState);
@@ -145,7 +145,7 @@ function translateHandState(handState) {
 // draw hands
 function drawHands(hands) {
 
-  // check if hands are touching 
+  // check if hands are touching
   if ((Math.abs(hands.leftHand.depthX - hands.rightHand.depthX) < 0.01) && (Math.abs(hands.leftHand.depthY - hands.rightHand.depthY) < 0.01)) {
     hands.leftHandState = 'clapping';
     hands.rightHandState = 'clapping';

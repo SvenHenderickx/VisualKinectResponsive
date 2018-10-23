@@ -23,10 +23,14 @@ let currentFrame = 0;
 let recorded_skeleton;
 let recorded_data_file = "./js/recorded_skeleton.json";
 
+var xHead;
+var yHead;
+
 var xRight;
 var yRight;
 var xLeft;
 var yLeft;
+
 
 function setup() {
   createCanvas(1920,1080);
@@ -38,12 +42,21 @@ function setup() {
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(HSB, 200);
+  colorMode(HSB, 300);
 }
 
 function drawBody(body){
-  background(0);
+  // background(0);
   for(var i = 0; i < body.joints.length; i++){
+
+    if(i == 3){
+      // fill(255,0,0);
+      // ellipse(body.joints[i].depthX * width, body.joints[i].depthY * height, 20, 20);
+      if(i == 3){
+        xHead = body.joints[i].depthX * width;
+        yHead = body.joints[i].depthY * height;
+      }
+    }
 
     if(i == 11 || i == 7){
       // fill(255,0,0);
@@ -56,17 +69,18 @@ function drawBody(body){
         xLeft = body.joints[i].depthX * width;
         yLeft = body.joints[i].depthY * height;
       }
-
     }
+
+    checkHandDistance();
   }
 }
 
 // Rain ~!!!!
 
 var allParticles = [];
-var globalHue = 100;
-var spawnPerFrame = 1;
-var mouseSize = 50;
+var globalHue = 120;
+var spawnPerFrame = 8;
+var mouseSize = 120;
 
 
 function Particle(x, y) {
@@ -92,10 +106,10 @@ function draw() {
     allParticles[i].acc.add(new p5.Vector(0, allParticles[i].size*0.0025));
 
     // Quick check to avoid calculating distance if possible.
-    if (abs(allParticles[i].pos.x-xRight) < mouseSize) {
-      d = dist(xRight, yRight, allParticles[i].pos.x, allParticles[i].pos.y);
+    if (abs(allParticles[i].pos.x-xHead) < mouseSize) {
+      d = dist(xHead, yHead, allParticles[i].pos.x, allParticles[i].pos.y);
       if (d < mouseSize) {
-        var vec = new p5.Vector(xRight, yRight-mouseSize);
+        var vec = new p5.Vector(xHead, yHead-mouseSize);
         vec.sub(new p5.Vector(allParticles[i].pos.x, allParticles[i].pos.y));
         vec.normalize();
         allParticles[i].vel.add(vec);
@@ -126,5 +140,17 @@ function draw() {
   globalHue += 0.015;
   if (globalHue > 360) {
     globalHue = 0;
+  }
+}
+
+function checkHandDistance(){
+  var distance = dist(xRight, yRight, xLeft, yLeft);
+  console.log(distance);
+  if(distance < 300){
+    // fill(0,0,255);
+    // ellipse(width / 2, height / 2, 50, 50);
+    spawnPerFrame = 1;
+  }else{
+    spawnPerFrame = 8;
   }
 }

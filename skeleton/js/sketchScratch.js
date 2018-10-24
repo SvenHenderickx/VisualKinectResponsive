@@ -135,7 +135,7 @@ function checkHandDistance(body){
   var bodyDouble = false;
   var distance = dist(xRight, yRight, xLeft, yLeft);
 
-  if(distance < 300){
+  if(distance < 150){
     for(var i = 0; i < handsClose.length; i++){
       if(handsClose[i] == body.trackingId){
         bodyDouble = true;
@@ -161,7 +161,7 @@ function checkHandDistance(body){
     bubbles[i].showTheBubble(body.trackingId, distance);
   }
 
-  if(handsClose.length > 2){
+  if(handsClose.length > 3){
     spawnPerFrame = 1;
   }
   else{
@@ -205,7 +205,7 @@ class Bubble {
       fill(250, 200, 200);
       ellipse(this.x, this.y, this.r * 2);
 
-      if(this.r < 101 && curDis < 300){
+      if(this.r < 101 && curDis < 150){
         this.r++;
       }
       else{
@@ -216,7 +216,7 @@ class Bubble {
             }
           }
         }
-        this.r = this.r - 3;
+        this.r--;
       }
 
       fill(0);

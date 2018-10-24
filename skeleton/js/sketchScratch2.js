@@ -20,7 +20,7 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.44.6");
+  kinectron = new Kinectron("145.93.129.170");
 
   kinectron.makeConnection();
 
@@ -64,8 +64,8 @@ var allParticles = [];
 var globalHue = 120;
 var spawnPerFrame = 3;
 var mouseSize = 120;
+
 let bubbles = [];
-var bubblesArr = [];
 
 function Particle(x, y) {
   this.lastPos = new p5.Vector(x, y);
@@ -83,6 +83,10 @@ function draw() {
   fill(0, 5);
   rect(0, 0, width, height);
 
+
+    for (let i = 0; i < bubbles.length; i++) {
+      bubbles[i].show();
+    }
 
   for (var i = 0; i < spawnPerFrame; i++) {
   	allParticles.push(new Particle(random(width), 0));
@@ -130,11 +134,10 @@ function draw() {
 }
 
 function checkHandDistance(body){
-
-
   var bodyDouble = false;
   var distance = dist(xRight, yRight, xLeft, yLeft);
-
+  // console.log(body);
+  // console.log(distance);
   if(distance < 300){
     for(var i = 0; i < handsClose.length; i++){
       if(handsClose[i] == body.trackingId){
@@ -145,9 +148,9 @@ function checkHandDistance(body){
     if(bodyDouble == false){
       handsClose.push(body.trackingId);
       console.log("added body");
-      createbubble(body.trackingId);
-    }
+      createbubble();
 
+    }
   }
   else{
     var index = handsClose.indexOf(body.trackingId);
@@ -157,11 +160,7 @@ function checkHandDistance(body){
     }
   }
 
-  for (let i = 0; i < bubbles.length; i++) {
-    bubbles[i].showTheBubble(body.trackingId, distance);
-  }
-
-  if(handsClose.length > 2){
+  if(handsClose.length > 1){
     spawnPerFrame = 1;
   }
   else{
@@ -169,59 +168,34 @@ function checkHandDistance(body){
   }
 }
 
-function createbubble(bId) {
+function createbubble() {
     let r = 0;
-    let b = new Bubble(xRight, yRight, r, bId);
+    let b = new Bubble(xRight, yRight, r);
 
     bubbles.push(b);
 }
 
 
 class Bubble {
-  constructor(x, y, r, bId) {
+  constructor(x, y, r) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.bId = bId;
   }
 
   show() {
     //stroke(255);
     //strokeWeight(4);
     //noFill();
-
+      fill(250, 200, 200);
 
     ellipse(this.x, this.y, this.r * 2);
     if(this.r < 100){
-        this.r = this.r + 2;
+        this.r = this.r + 1;
     }
     fill(0);
     text(this.r, this.x-9, this.y+2);
     // console.log(this.r);
-  }
-
-  showTheBubble(bodyId, curDis){
-    if(bodyId == this.bId){
-      fill(250, 200, 200);
-      ellipse(this.x, this.y, this.r * 2);
-
-      if(this.r < 101 && curDis < 300){
-        this.r++;
-      }
-      else{
-        if(this.r < 0){
-          for(var i = 0; i < bubbles.length; i++){
-            if(bubbles[i] == this){
-              bubbles.splice(i, 1);
-            }
-          }
-        }
-        this.r = this.r - 3;
-      }
-
-      fill(0);
-      text(this.r, this.x-9, this.y+2);
-    }
 
   }
 }

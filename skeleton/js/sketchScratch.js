@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.182.29";
+let kinectronIpAddress = "145.93.44.6";
 
 // declare kinectron
 let kinectron = null;
@@ -20,7 +20,7 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.44.6");
+  kinectron = new Kinectron("145.93.129.170");
 
   kinectron.makeConnection();
 
@@ -62,14 +62,14 @@ function drawBody(body){
 
 var allParticles = [];
 var globalHue = 120;
-var spawnPerFrame = 5;
+var spawnPerFrame = 3;
 var mouseSize = 120;
-
+let bubbles = [];
 
 function Particle(x, y) {
   this.lastPos = new p5.Vector(x, y);
   this.pos = new p5.Vector(x, y);
-  this.vel = new p5.Vector(0, 7);
+  this.vel = new p5.Vector(0, 0);
   this.acc = new p5.Vector(0, 0);
   this.size = random(2, 20);
   this.h = globalHue;
@@ -77,9 +77,15 @@ function Particle(x, y) {
 
 
 function draw() {
+
   noStroke();
   fill(0, 5);
   rect(0, 0, width, height);
+
+
+    for (let i = 0; i < bubbles.length; i++) {
+      bubbles[i].show();
+    }
 
   for (var i = 0; i < spawnPerFrame; i++) {
   	allParticles.push(new Particle(random(width), 0));
@@ -141,6 +147,8 @@ function checkHandDistance(body){
     if(bodyDouble == false){
       handsClose.push(body.trackingId);
       console.log("added body");
+      createbubble();
+
     }
   }
   else{
@@ -155,6 +163,38 @@ function checkHandDistance(body){
     spawnPerFrame = 1;
   }
   else{
-    spawnPerFrame = 5;
+    spawnPerFrame = 3;
+  }
+}
+
+function createbubble() {
+    let r = 0;
+    let b = new Bubble(xRight, yRight, r);
+
+    bubbles.push(b);
+}
+
+
+class Bubble {
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
+
+  show() {
+    //stroke(255);
+    //strokeWeight(4);
+    //noFill();
+      fill(250, 200, 200);
+
+    ellipse(this.x, this.y, this.r * 2);
+    if(this.r < 100){
+        this.r = this.r + 1;
+    }
+    fill(0);
+    text(this.r, this.x-9, this.y+2);
+    // console.log(this.r);
+
   }
 }

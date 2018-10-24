@@ -794,7 +794,7 @@ Negotiator._setupListeners = function(connection, pc, pc_id) {
 
   // MEDIACONNECTION.
   util.log('Listening for remote stream');
-  pc.onaddstream = function(evt) {
+  pc.ontrack = function(evt) {
     util.log('Received remote stream');
     var stream = evt.stream;
     var connection = provider.getConnection(peerId, connectionId);
@@ -1634,7 +1634,7 @@ Socket.prototype.close = function() {
 module.exports = Socket;
 
 },{"./util":8,"eventemitter3":1}],8:[function(require,module,exports){
-var defaultConfig = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
+var defaultConfig = {'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }]};
 var dataCount = 1;
 
 var BinaryPack = require('js-binarypack');
@@ -2863,7 +2863,7 @@ var BinaryPack = require('js-binarypack');
 
 var util = {
   debug: false,
-  
+
   inherits: function(ctor, superCtor) {
     ctor.super_ = superCtor;
     ctor.prototype = Object.create(superCtor.prototype, {
@@ -2885,7 +2885,7 @@ var util = {
   },
   pack: BinaryPack.pack,
   unpack: BinaryPack.unpack,
-  
+
   log: function () {
     if (util.debug) {
       var copy = [];
@@ -2907,7 +2907,7 @@ var util = {
     function setZeroTimeoutPostMessage(fn) {
       timeouts.push(fn);
       global.postMessage(messageName, '*');
-    }   
+    }
 
     function handleMessage(event) {
       if (event.source == global && event.data == messageName) {
@@ -2926,7 +2926,7 @@ var util = {
     }
     return setZeroTimeoutPostMessage;
   }(this)),
-  
+
   blobToArrayBuffer: function(blob, cb){
     var fr = new FileReader();
     fr.onload = function(evt) {
@@ -2958,10 +2958,10 @@ module.exports = util;
 },{"js-binarypack":9}],13:[function(require,module,exports){
 (function(window) {
 
-// Import Peer.js 
+// Import Peer.js
 var Peer = require('peerjs');
 
-Kinectron = function(arg1, arg2) {  
+Kinectron = function(arg1, arg2) {
   this.img = null;
   this.feed = null;
   this.body = null;
@@ -2972,7 +2972,7 @@ Kinectron = function(arg1, arg2) {
   this.depthCallback = null;
   this.rawDepthCallback = null;
   this.infraredCallback = null;
-  this.leInfraredCallback = null; 
+  this.leInfraredCallback = null;
   this.bodiesCallback = null;
   this.trackedBodiesCallback = null;
   this.trackedJointCallback = null;
@@ -3012,8 +3012,8 @@ Kinectron = function(arg1, arg2) {
   var COLORHEIGHT = 540;
 
   var DEPTHWIDTH = 512;
-  var DEPTHHEIGHT = 424; 
-  
+  var DEPTHHEIGHT = 424;
+
   // Processing raw depth indicator
   var busy = false;
 
@@ -3025,11 +3025,11 @@ Kinectron = function(arg1, arg2) {
   var ready = false;
   var holdInitFeed = null;
 
-  // Peer variables and defaults 
+  // Peer variables and defaults
   var peer = null;
   var connection = null;
   var peerNet = {host: 'localhost', port: 9001, path: '/'}; // Connect to localhost by default
-  var peerId = 'kinectron'; // Connect to peer Id Kinectron by default 
+  var peerId = 'kinectron'; // Connect to peer Id Kinectron by default
 
   // Hidden div variables
   var myDiv = null;
@@ -3041,7 +3041,7 @@ Kinectron = function(arg1, arg2) {
   var rawDepthChunks = [];
   var mediaRecorders = [];
 
-  // Check for ip address in "quickstart" method  
+  // Check for ip address in "quickstart" method
   if (typeof arg1 !=="undefined" && typeof arg2 == "undefined") {
     var host = arg1;
     peerNet.host = host;
@@ -3052,11 +3052,11 @@ Kinectron = function(arg1, arg2) {
     var network = arg2;
     peerId = peerid;
     peerNet = network;
-  } 
+  }
 
   // Create new peer
   peer = new Peer(peerNet);
-  
+
   peer.on('open', function(id) {
     console.log('My peer ID is: ' + id);
   });
@@ -3066,7 +3066,7 @@ Kinectron = function(arg1, arg2) {
       console.log("Peer js is connected");
     });
   });
-  
+
   // Create hidden image to draw to
   myDiv = document.createElement("div");
   myDiv.style.visibility = "hidden";
@@ -3077,7 +3077,7 @@ Kinectron = function(arg1, arg2) {
   this.img = document.createElement("img");
   myDiv.appendChild(this.img);
 
-  // Used for raw depth processing. 
+  // Used for raw depth processing.
   // TO DO refactor: create dynamically in process raw depth
   hiddenCanvas = document.createElement("canvas");
   hiddenCanvas.width = 512;
@@ -3099,7 +3099,7 @@ Kinectron = function(arg1, arg2) {
     // Route incoming traffic from Kinectron
     connection.on('data', function(dataReceived) {
       var data = dataReceived.data;
-      
+
       switch (dataReceived.event) {
         // Wait for ready from Kinectron to initialize
         case 'ready':
@@ -3118,12 +3118,12 @@ Kinectron = function(arg1, arg2) {
 
           this.img.onload = function() {
             this._chooseCallback(data.name);
-          
-            if (doRecord) this._drawImageToCanvas(data.name);  
+
+            if (doRecord) this._drawImageToCanvas(data.name);
           }.bind(this);
-          
+
         break;
-        
+
         // If receive all bodies, send all bodies
         case 'bodyFrame':
           this.bodiesCallback(data);
@@ -3131,20 +3131,20 @@ Kinectron = function(arg1, arg2) {
           if (doRecord) {
             data.record_startime = recordStartTime;
             data.record_timestamp = Date.now() - recordStartTime;
-            bodyChunks.push(data);  
+            bodyChunks.push(data);
           }
         break;
- 
+
         // If receive tracked skeleton data, send skeleton
         case 'trackedBodyFrame':
           this.body = data;
 
           // If joint specified send joint and call joint callback
           if (this.jointName && this.trackedJointCallback && this.body.joints[this.jointName] !== 0) {
-            var joint = this.body.joints[this.jointName]; 
+            var joint = this.body.joints[this.jointName];
             joint.trackingId  = this.body.trackingId;
             this.trackedJointCallback(joint);
-            
+
             if (doRecord) {
               joint.record_startime = recordStartTime;
               joint.record_timestamp = Date.now() - recordStartTime;
@@ -3193,26 +3193,26 @@ Kinectron = function(arg1, arg2) {
             if (doRecord) {
               if (data.color) {
                 this.img.src = data.color;
-                
+
                 this.img.onload = function() {
-                  this._drawImageToCanvas('color');  
+                  this._drawImageToCanvas('color');
                 }.bind(this);
-                
-              } 
-              
+
+              }
+
               if (data.depth) {
                 this.img.src = data.depth;
 
-                this.img.onload = function() {  
+                this.img.onload = function() {
                   this._drawImageToCanvas('depth');
                 }.bind(this);
-              } 
+              }
 
               if (data.body) {
                 data.body.record_startime = recordStartTime;
                 data.body.record_timestamp = Date.now() - recordStartTime;
-                bodyChunks.push(data.body);  
-              } 
+                bodyChunks.push(data.body);
+              }
 
               if (data.rawDepth) {
                 var recordedData2 = {};
@@ -3228,10 +3228,10 @@ Kinectron = function(arg1, arg2) {
 
               this.img.onload = function () {
                 this.colorCallback(this.img);
-              
-                if (doRecord) this._drawImageToCanvas('color');  
+
+                if (doRecord) this._drawImageToCanvas('color');
               }.bind(this);
-              
+
             }
 
             if (data.depth) {
@@ -3239,19 +3239,19 @@ Kinectron = function(arg1, arg2) {
 
               this.img.onload = function() {
                 this.depthCallback(this.img);
-              
-                if (doRecord) this._drawImageToCanvas('depth');  
+
+                if (doRecord) this._drawImageToCanvas('depth');
               }.bind(this);
-              
+
             }
 
             if (data.body) {
               this.bodiesCallback(data.body);
-              
+
               if (doRecord) {
                 data.body.record_startime = recordStartTime;
                 data.body.record_timestamp = Date.now() - recordStartTime;
-                bodyChunks.push(data.body);  
+                bodyChunks.push(data.body);
               }
             }
 
@@ -3276,10 +3276,10 @@ Kinectron = function(arg1, arg2) {
   // Changed RGB to Color to be consistent with SDK, RGB depricated 3/16/17
   this.startRGB = function(callback) {
     console.warn('startRGB no longer in use. Use startColor instead');
-    if (callback) { 
+    if (callback) {
       this.colorCallback = callback;
     }
-    
+
     this._setFeed('color');
   };
 
@@ -3292,16 +3292,16 @@ Kinectron = function(arg1, arg2) {
 
   this.startDepth = function(callback) {
     if (callback) {
-      this.depthCallback = callback;  
-    } 
+      this.depthCallback = callback;
+    }
 
     this._setFeed('depth');
   };
 
   this.startRawDepth = function(callback) {
     if (callback) {
-      this.rawDepthCallback = callback;  
-    } 
+      this.rawDepthCallback = callback;
+    }
 
     this._setFeed('raw-depth');
   };
@@ -3310,38 +3310,38 @@ Kinectron = function(arg1, arg2) {
     if (callback) {
       this.infraredCallback = callback;
     }
-    
+
     this._setFeed('infrared');
   };
 
   this.startLEInfrared = function(callback) {
     if (callback) {
-      this.leInfraredCallback = callback;  
+      this.leInfraredCallback = callback;
     }
-    
+
     this._setFeed('le-infrared');
   };
 
   this.startBodies = function(callback) {
     if (callback) {
-      this.bodiesCallback = callback;  
+      this.bodiesCallback = callback;
     }
-    
+
     this._setFeed('body');
   };
 
   this.startTrackedBodies = function(callback) {
     if (callback) {
-      this.trackedBodiesCallback = callback;  
+      this.trackedBodiesCallback = callback;
     }
-    
+
     // Reset tracked joint variables
     this.jointName = null;
     this.trackedJointCallback = null;
 
     this._setFeed('skeleton');
   };
-  
+
   this.startTrackedJoint = function(jointName, callback) {
     if (typeof jointName == 'undefined') {
        console.warn("Joint name does not exist.");
@@ -3366,14 +3366,14 @@ Kinectron = function(arg1, arg2) {
     multiFrame = true;
     currentFrames = frames;
 
-    this._sendToPeer('multi', frames);     
+    this._sendToPeer('multi', frames);
   };
 
   this.startKey = function(callback) {
     if (callback) {
-      this.keyCallback = callback;  
+      this.keyCallback = callback;
     }
-    
+
     this._setFeed('key');
   };
 
@@ -3392,9 +3392,9 @@ Kinectron = function(arg1, arg2) {
 
   // this.startFloorHeight = function(callback) {
   //   if (callback) {
-  //     this.fhCallback = callback;  
+  //     this.fhCallback = callback;
   //   }
-    
+
   //   this._setFeed('fh-joint');
   // };
 
@@ -3403,7 +3403,7 @@ Kinectron = function(arg1, arg2) {
     this._setFeed('stop-all');
   };
 
-  // Set Callbacks 
+  // Set Callbacks
 
   // Changed RGB to Color to be consistent with SDK, RGB depricated 3/16/17
   this.setRGBCallback = function(callback) {
@@ -3424,21 +3424,21 @@ Kinectron = function(arg1, arg2) {
   };
 
   this.setInfraredCallback = function(callback) {
-    this.infraredCallback = callback;  
+    this.infraredCallback = callback;
   };
-  
+
   this.setLeInfraredCallback = function(callback) {
-    this.leInfraredCallback = callback; 
+    this.leInfraredCallback = callback;
   };
 
   this.setBodiesCallback = function(callback) {
-    this.bodiesCallback = callback;  
+    this.bodiesCallback = callback;
   };
-  
+
   this.setTrackedBodiesCallback = function(callback) {
-    this.trackedBodiesCallback = callback;  
+    this.trackedBodiesCallback = callback;
   };
-  
+
   this.setKeyCallback = function(callback) {
     this.keyCallback = callback;
   };
@@ -3448,13 +3448,13 @@ Kinectron = function(arg1, arg2) {
   };
 
   this.setFhCallback = function(callback) {
-    this.fhCallback = callback;  
+    this.fhCallback = callback;
   };
 
   this.setMultiFrameCallback = function(callback) {
     this.multiFrameCallback = callback;
   };
-  
+
   this.getJoints = function(callback) {
     var jointCallback = callback;
     var joint = null;
@@ -3464,14 +3464,14 @@ Kinectron = function(arg1, arg2) {
       jointCallback(joint);
     }
   };
-  
+
   this.getHands = function(callback) {
     var handCallback = callback;
     var leftHand = this.body.joints[7];
     var rightHand = this.body.joints[11];
     var leftHandState = this._getHandState(this.body.leftHandState);
     var rightHandState = this._getHandState(this.body.rightHandState);
-    var hands = { 
+    var hands = {
       leftHand: leftHand,
       rightHand: rightHand,
       leftHandState: leftHandState,
@@ -3521,12 +3521,12 @@ Kinectron = function(arg1, arg2) {
   // Send data to peer
   this._sendToPeer = function(evt, data) {
     var dataToSend = {
-      event: evt, 
+      event: evt,
       data: data
     };
 
     // If connection not ready, wait for connection
-    if (!ready) { 
+    if (!ready) {
       holdInitFeed = dataToSend;
       return;
     }
@@ -3598,7 +3598,7 @@ Kinectron = function(arg1, arg2) {
     }.bind(this);
 
     imageData = hiddenContext.getImageData(0, 0, hiddenContext.canvas.width, hiddenContext.canvas.height);
-    
+
     for(var i = 0; i < imageData.data.length; i+=4) {
       var depth = (imageData.data[i+1] << 8) + imageData.data[i]; //get uint16 data from buffer
       processedData.push(depth);
@@ -3633,18 +3633,18 @@ Kinectron = function(arg1, arg2) {
       for (var j = 0; j < framesToRecord.length; j++) {
         mediaRecorders.push(this._createMediaRecorder(framesToRecord[j]));
       }
-      
+
       recordStartTime = Date.now();
       doRecord = true;
 
     } else {
       doRecord = false;
-      
+
       // Stop all mediarecorders and remove them from array
       for (var k = mediaRecorders.length - 1; k >= 0; k--) {
-        mediaRecorders[k].stop();  
+        mediaRecorders[k].stop();
         mediaRecorders.splice(k, 1);
-      } 
+      }
 
     }
   };
@@ -3656,10 +3656,10 @@ Kinectron = function(arg1, arg2) {
     for (var k = 0; k < mediaRecorders.length; k++) {
       var id = mediaRecorders[k].canvas.id;
       if (id.indexOf(frame) >= 0) {
-       tempContext = mediaRecorders[k].canvas.getContext("2d"); 
+       tempContext = mediaRecorders[k].canvas.getContext("2d");
       }
     }
-    
+
     // Draw to the appropriate canvas
     tempContext.clearRect(0,0, tempContext.canvas.width, tempContext.canvas.height);
     tempContext.drawImage(this.img, 0, 0);
@@ -3682,14 +3682,14 @@ Kinectron = function(arg1, arg2) {
 
     newHiddenContext = hiddenCanvas.getContext("2d");
     newHiddenContext.fillRect(0, 0, newHiddenCanvas.width, newHiddenCanvas.height);
-    
+
     // Add canvas to hidden div
     myDiv.appendChild(newHiddenCanvas);
 
     // Create media recorder, add canvas to recorder
     newMediaRecorder = new MediaRecorder(newHiddenCanvas.captureStream());
     newMediaRecorder.canvas = newHiddenCanvas;
-    
+
     var mediaChunks = [];
 
     newMediaRecorder.onstop = function (e) {
@@ -3707,9 +3707,9 @@ Kinectron = function(arg1, arg2) {
         window.URL.revokeObjectURL(jsonUrl);
 
         // Reset body chunks
-        bodyChunks.length = 0;   
-      
-      // If raw depth data tracked, write out to JSON       
+        bodyChunks.length = 0;
+
+      // If raw depth data tracked, write out to JSON
       } else if (frame == 'raw-depth') {
         var blobJsonRd = new Blob([JSON.stringify(rawDepthChunks)], {type : 'application/json'});
         var jsonRdUrl = URL.createObjectURL(blobJsonRd);
@@ -3722,11 +3722,11 @@ Kinectron = function(arg1, arg2) {
         window.URL.revokeObjectURL(jsonRdUrl);
 
         // Reset body chunks
-        rawDepthChunks.length = 0;  
+        rawDepthChunks.length = 0;
 
       // If video display the video on the page
       } else {
-        
+
         // The video as a blob
         var blobVideo = new Blob(mediaChunks, { 'type' : 'video/webm' });
 
@@ -3737,7 +3737,7 @@ Kinectron = function(arg1, arg2) {
         // document.body.appendChild(videoElement);
         // videoElement.src = window.URL.createObjectURL(blobVideo);
 
-        // Download the video 
+        // Download the video
         var url = URL.createObjectURL(blobVideo);
         var a = document.createElement('a');
         document.body.appendChild(a);
@@ -3748,7 +3748,7 @@ Kinectron = function(arg1, arg2) {
         window.URL.revokeObjectURL(url);
 
         // Reset media chunks
-        mediaChunks.length = 0;    
+        mediaChunks.length = 0;
       }
 
 
@@ -3765,7 +3765,7 @@ Kinectron = function(arg1, arg2) {
   };
 
 
-  
+
 };
 
 })(window);

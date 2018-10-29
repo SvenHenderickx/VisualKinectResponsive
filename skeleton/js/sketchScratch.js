@@ -20,7 +20,7 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.44.6");
+  kinectron = new Kinectron("145.93.45.31");
 
   kinectron.makeConnection();
 

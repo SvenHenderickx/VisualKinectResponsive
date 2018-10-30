@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.44.6";
+let kinectronIpAddress = "145.93.181.150";
 
 // declare kinectron
 let kinectron = null;
@@ -20,14 +20,14 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.45.31");
+  kinectron = new Kinectron("145.93.181.150");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(HSB, 100);
+  colorMode(RGB, 100);
 }
 
 function drawBody(body){
@@ -72,7 +72,7 @@ function Particle(x, y) {
   this.pos = new p5.Vector(x, y);
   this.vel = new p5.Vector(0, 0);
   this.acc = new p5.Vector(0, 0);
-  this.size = random(2, 20);
+  this.size = random(2, 15);
   this.h = globalHue;
 }
 
@@ -111,8 +111,9 @@ function draw() {
     allParticles[i].pos.add(allParticles[i].vel);
     allParticles[i].acc.mult(0);
 
-    stroke(allParticles[i].h, 360, 360);
-    strokeWeight(allParticles[i].size);
+    stroke(allParticles[i].h, 100, 200);
+    //strokeWeight(allParticles[i].size);
+      strokeWeight(2);
     line(allParticles[i].lastPos.x, allParticles[i].lastPos.y,
          allParticles[i].pos.x, allParticles[i].pos.y);
 
@@ -185,7 +186,7 @@ class Bubble {
     this.bId = bId;
   }
 
-  show() {
+  /*show() {
     //stroke(255);
     //strokeWeight(4);
     //noFill();
@@ -195,18 +196,18 @@ class Bubble {
     if(this.r < 100){
         this.r = this.r + 2;
     }
-    fill(0);
+    //fill(0, 5);
     text(this.r, this.x-9, this.y+2);
     // console.log(this.r);
-  }
+  }*/
 
   showTheBubble(bodyId, curDis){
     if(bodyId == this.bId){
-      fill(250, 200, 200);
+      fill(255, 5);
       ellipse(this.x, this.y, this.r * 2);
 
       if(this.r < 101 && curDis < 150){
-        this.r++;
+        this.r = this.r + 10;
       }
       else{
         if(this.r < 0){
@@ -216,11 +217,13 @@ class Bubble {
             }
           }
         }
-        this.r--;
+        this.r = this.r - 10;
       }
 
       fill(0);
-      text(this.r, this.x-9, this.y+2);
+
+     // var col = map(this.r, 0, 500, 0, 100);
+      //text(this.r, this.x-9, this.y+2);
     }
 
   }

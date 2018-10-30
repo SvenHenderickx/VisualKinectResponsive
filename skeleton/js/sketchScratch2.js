@@ -20,14 +20,14 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.45.31");
+  kinectron = new Kinectron("145.93.128.202");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(HSB, 100);
+  colorMode(RGB, 100);
 }
 
 function drawBody(body){

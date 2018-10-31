@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.181.150";
+let kinectronIpAddress = "145.93.82.36";
 
 // declare kinectron
 let kinectron = null;
@@ -17,17 +17,24 @@ var yLeft;
 
 var handsClose = [];
 
+var img;
+
+/*function preload() {
+    img = loadImage("assets/hand.jpg");
+}*/
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.181.150");
+  kinectron = new Kinectron("145.93.82.36");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(RGB, 100);
+  colorMode(RGB, 100, 100, 100, 10);
+
+
 }
 
 function drawBody(body){
@@ -203,24 +210,28 @@ class Bubble {
 
   showTheBubble(bodyId, curDis){
     if(bodyId == this.bId){
-      fill(255, 5);
+      fill(20, 20);
       ellipse(this.x, this.y, this.r * 2);
+      //image(img, this.x, this.y);
 
-      if(this.r < 101 && curDis < 150){
-        this.r = this.r + 10;
+      if(curDis < 150 && this.r < 101){
+        this.r = this.r + 25;
       }
-      else{
-        if(this.r < 0){
-          for(var i = 0; i < bubbles.length; i++){
-            if(bubbles[i] == this){
-              bubbles.splice(i, 1);
+
+      if(curDis > 150 && this.r > 0){
+            this.r = this.r - 20;
+      }
+
+        if(this.r < 0 && curDis > 150){
+            for(var i = 0; i < bubbles.length; i++){
+                if(bubbles[i] == this){
+                    bubbles.splice(i, 1);
+                }
             }
-          }
         }
-        this.r = this.r - 10;
-      }
 
-      fill(0);
+
+        //fill(0);
 
      // var col = map(this.r, 0, 500, 0, 100);
       //text(this.r, this.x-9, this.y+2);

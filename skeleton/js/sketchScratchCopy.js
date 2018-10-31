@@ -47,7 +47,7 @@ function drawBody(body){
       if(i == 3){
         xHead = body.joints[i].depthX * width;
         yHead = body.joints[i].depthY * height;
-      }
+    }
     }
 
     if(i == 11 || i == 7){

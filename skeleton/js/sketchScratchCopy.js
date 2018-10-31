@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.82.36";
+let kinectronIpAddress = "145.93.181.150";
 
 // declare kinectron
 let kinectron = null;

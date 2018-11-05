@@ -139,7 +139,8 @@ function drawBody(body){
 
 }
 
-
+var thresholdNew = .75;
+var distThresh;
 
 function draw() {
   // Create fade effect.
@@ -152,7 +153,7 @@ function draw() {
   for (var i = allParticles.length-1; i > -1; i--) {
     allParticles[i].move();
 
-    if (allParticles[i].vel.mag() < .75) {
+    if (allParticles[i].vel.mag() < thresholdNew) {
       allParticles.splice(i, 1);
     }
   }
@@ -173,7 +174,7 @@ function draw() {
       var p3 = allParticles[data[i+2]];
 
       // Don't draw triangle if its area is too big.
-      var distThresh = 350;
+      distThresh = 350;
 
       if (dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
         continue;
@@ -224,9 +225,15 @@ function checkHand(xPos, yPos, r, g, b) {
 function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
     var distance = dist(xRightIn, yRightIn, xLeftIn, yLeftIn);
     // console.log(distance);
-    if(distance < 101){
+    if(distance > 800 && distance < 1200){
         fill(0,0,255);
         ellipse(width / 2, height / 2, 50, 50);
+        thresholdNew = .6;
+        distThresh = 1000;
+    }
+    else{
+      thresholdNew = .75;
+      distThresh = 350;
     }
 }
 

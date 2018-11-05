@@ -113,8 +113,9 @@ function drawBody(body){
         }
     }
 
+    checkHead();
+    checkHandDistance();
 
-    //checkHandDistance();
 }
 
 
@@ -188,6 +189,16 @@ function draw() {
 
 function checkHand(xPos, yPos) {
   allParticles.push(new Particle(xPos, yPos, maxLevel));
+
+}
+
+function checkHandDistance(){
+    var distance = dist(xRight, yRight, xLeft, yLeft);
+    console.log(distance);
+    if(distance < 300){
+        fill(0,0,255);
+        ellipse(width / 2, height / 2, 50, 50);
+    }
 }
 
 // function checkHandDistance(){

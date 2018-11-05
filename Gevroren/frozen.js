@@ -44,9 +44,12 @@ var data = [];
 
 // Moves to a random direction and comes to a stop.
 // Spawns other particles within its lifetime.
-function Particle(x, y, level) {
+function Particle(x, y, level, r, g, b) {
   this.level = level;
   this.life = 0;
+  this.r = r;
+  this.g = g;
+  this.b = b;
 
   this.pos = new p5.Vector(x, y);
   this.vel = p5.Vector.random2D();
@@ -75,13 +78,13 @@ function Particle(x, y, level) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-    kinectron = new Kinectron("145.93.81.21");
+  kinectron = new Kinectron("145.93.81.21");
 
-    kinectron.makeConnection();
+  kinectron.makeConnection();
 
-    kinectron.startTrackedBodies(drawBody);
+  kinectron.startTrackedBodies(drawBody);
 
-  colorMode(HSB, 360);
+  colorMode(RGB, 255);
 
   textAlign(CENTER);
 
@@ -89,44 +92,21 @@ function setup() {
 }
 
 function drawBody(body){
-    // background(0);
-    // for(var i = 0; i < body.joints.length; i++){
-    //
-    //     if(i == 3){
-    //         // fill(255,0,0);
-    //         // ellipse(body.joints[i].depthX * width, body.joints[i].depthY * height, 20, 20);
-    //         if(i == 3){
-    //             xHead = body.joints[i].depthX * width;
-    //             yHead = body.joints[i].depthY * height;
-    //         }
-    //     }
-    //
-    //     if(i == 11 || i == 7){
-    //         if(i == 11){
-    //             xRight = body.joints[i].depthX * width;
-    //             yRight = body.joints[i].depthY * height;
-    //         }
-    //         if(i == 7){
-    //             xLeft = body.joints[i].depthX * width;
-    //             yLeft = body.joints[i].depthY * height;
-    //         }
-    //     }
-    // }
 
-    checkHand(body.joints[kinectron.HANDRIGHT].depthX * width, body.joints[kinectron.HANDRIGHT].depthY * height);
-    checkHand(body.joints[kinectron.HANDLEFT].depthX * width, body.joints[kinectron.HANDLEFT].depthY * height);
-    checkHand(body.joints[kinectron.HEAD].depthX * width, body.joints[kinectron.HEAD].depthY * height);
-    checkHand(body.joints[kinectron.FOOTLEFT].depthX * width, body.joints[kinectron.FOOTLEFT].depthY * height);
-    checkHand(body.joints[kinectron.FOOTRIGHT].depthX * width, body.joints[kinectron.FOOTRIGHT].depthY * height);
-    checkHand(body.joints[kinectron.SPINEBASE].depthX * width, body.joints[kinectron.SPINEBASE].depthY * height);
-    checkHand(body.joints[kinectron.NECK].depthX * width, body.joints[kinectron.NECK].depthY * height);
-    checkHand(body.joints[kinectron.KNEELEFT].depthX * width, body.joints[kinectron.KNEELEFT].depthY * height);
-    checkHand(body.joints[kinectron.KNEERIGHT].depthX * width, body.joints[kinectron.KNEERIGHT].depthY * height);
-    checkHand(body.joints[kinectron.ELBOWRIGHT].depthX * width, body.joints[kinectron.ELBOWRIGHT].depthY * height);
-    checkHand(body.joints[kinectron.ELBOWLEFT].depthX * width, body.joints[kinectron.ELBOWLEFT].depthY * height);
+    var allJoints = [kinectron.HANDRIGHT, kinectron.HANDLEFT, kinectron.HEAD, kinectron.FOOTLEFT, kinectron.FOOTRIGHT, kinectron.SPINEBASE, kinectron.NECK, kinectron.KNEELEFT, kinectron.KNEERIGHT, kinectron.ELBOWRIGHT, kinectron.ELBOWLEFT];
+
+    // console.log(allJoints);
+
+    var newRed = random(255);
+    var newGreen = random(255);
+    var newBlue = random(255);
+
+    for(var i = 0; i < allJoints.length; i++){
+        checkHand(body.joints[allJoints[i]].depthX * width, body.joints[allJoints[i]].depthY * height, newRed, newGreen, newBlue);
+    }
 
     // checkHead();
-    checkHandDistance();
+    checkHandDistance(body.joints[kinectron.HANDRIGHT].depthX * width, body.joints[kinectron.HANDRIGHT].depthY * height, body.joints[kinectron.HANDLEFT].depthX * width, body.joints[kinectron.HANDLEFT].depthY * height);
 
 }
 
@@ -184,7 +164,7 @@ function draw() {
         fill(165+p1.life*1.5, 360, 360);
       } else {
         noFill();
-        stroke(165+p1.life*1.5, 360, 360);
+        stroke(p1.r, p1.g, p1.b);
       }
 
       triangle(p1.pos.x, p1.pos.y,
@@ -199,8 +179,8 @@ function draw() {
 }
 
 
-function checkHand(xPos, yPos) {
-  allParticles.push(new Particle(xPos, yPos, maxLevel));
+function checkHand(xPos, yPos, r, g, b) {
+  allParticles.push(new Particle(xPos, yPos, maxLevel, r, g, b));
   console.log("xpos:" + xPos);
   console.log("ypos:" + yPos);
 }
@@ -214,8 +194,8 @@ function checkHand(xPos, yPos) {
 //     }
 // }
 
-function checkHandDistance(){
-    var distance = dist(xRight, yRight, xLeft, yLeft);
+function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
+    var distance = dist(xRightIn, yRightIn, xLeftIn, yLeftIn);
     console.log(distance);
     if(distance < 101){
         fill(0,0,255);

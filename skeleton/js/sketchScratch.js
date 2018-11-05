@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.44.6";
+let kinectronIpAddress = "145.93.128.202";
 
 // declare kinectron
 let kinectron = null;
@@ -20,14 +20,14 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.45.31");
+  kinectron = new Kinectron("145.93.82.36");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(HSB, 100);
+  colorMode(RGB, 100);
 }
 
 function drawBody(body){

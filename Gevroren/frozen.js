@@ -75,7 +75,7 @@ function Particle(x, y, level) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-    kinectron = new Kinectron("145.93.82.36");
+    kinectron = new Kinectron("145.93.81.21");
 
     kinectron.makeConnection();
 
@@ -113,8 +113,8 @@ function drawBody(body){
         }
     }
 
-    checkHand();
-    //checkHandDistance();
+    checkHead();
+    checkHandDistance();
 }
 
 function draw() {
@@ -184,8 +184,17 @@ function draw() {
 }
 
 
-function checkHand() {
+function checkHead() {
   allParticles.push(new Particle(xHead, yHead, maxLevel));
+}
+
+function checkHandDistance(){
+    var distance = dist(xRight, yRight, xLeft, yLeft);
+    console.log(distance);
+    if(distance < 300){
+        fill(0,0,255);
+        ellipse(width / 2, height / 2, 50, 50);
+    }
 }
 
 // function checkHandDistance(){

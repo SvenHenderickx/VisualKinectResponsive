@@ -8,7 +8,7 @@ var yLeft;
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.182.29");
+  kinectron = new Kinectron("145.93.81.21");
 
   kinectron.makeConnection();
 

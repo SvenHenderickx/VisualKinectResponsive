@@ -90,30 +90,42 @@ function setup() {
 
 function drawBody(body){
     // background(0);
-    for(var i = 0; i < body.joints.length; i++){
-        checkHand(body.joints[i].depthX * width, body.joints[i].depthY * height);
-        if(i == 3){
-            // fill(255,0,0);
-            // ellipse(body.joints[i].depthX * width, body.joints[i].depthY * height, 20, 20);
-            if(i == 3){
-                xHead = body.joints[i].depthX * width;
-                yHead = body.joints[i].depthY * height;
-            }
-        }
+    // for(var i = 0; i < body.joints.length; i++){
+    //
+    //     if(i == 3){
+    //         // fill(255,0,0);
+    //         // ellipse(body.joints[i].depthX * width, body.joints[i].depthY * height, 20, 20);
+    //         if(i == 3){
+    //             xHead = body.joints[i].depthX * width;
+    //             yHead = body.joints[i].depthY * height;
+    //         }
+    //     }
+    //
+    //     if(i == 11 || i == 7){
+    //         if(i == 11){
+    //             xRight = body.joints[i].depthX * width;
+    //             yRight = body.joints[i].depthY * height;
+    //         }
+    //         if(i == 7){
+    //             xLeft = body.joints[i].depthX * width;
+    //             yLeft = body.joints[i].depthY * height;
+    //         }
+    //     }
+    // }
 
-        if(i == 11 || i == 7){
-            if(i == 11){
-                xRight = body.joints[i].depthX * width;
-                yRight = body.joints[i].depthY * height;
-            }
-            if(i == 7){
-                xLeft = body.joints[i].depthX * width;
-                yLeft = body.joints[i].depthY * height;
-            }
-        }
-    }
+    checkHand(body.joints[kinectron.HANDRIGHT].depthX * width, body.joints[kinectron.HANDRIGHT].depthY * height);
+    checkHand(body.joints[kinectron.HANDLEFT].depthX * width, body.joints[kinectron.HANDLEFT].depthY * height);
+    checkHand(body.joints[kinectron.HEAD].depthX * width, body.joints[kinectron.HEAD].depthY * height);
+    checkHand(body.joints[kinectron.FOOTLEFT].depthX * width, body.joints[kinectron.FOOTLEFT].depthY * height);
+    checkHand(body.joints[kinectron.FOOTRIGHT].depthX * width, body.joints[kinectron.FOOTRIGHT].depthY * height);
+    checkHand(body.joints[kinectron.SPINEBASE].depthX * width, body.joints[kinectron.SPINEBASE].depthY * height);
+    checkHand(body.joints[kinectron.NECK].depthX * width, body.joints[kinectron.NECK].depthY * height);
+    checkHand(body.joints[kinectron.KNEELEFT].depthX * width, body.joints[kinectron.KNEELEFT].depthY * height);
+    checkHand(body.joints[kinectron.KNEERIGHT].depthX * width, body.joints[kinectron.KNEERIGHT].depthY * height);
+    checkHand(body.joints[kinectron.ELBOWRIGHT].depthX * width, body.joints[kinectron.ELBOWRIGHT].depthY * height);
+    checkHand(body.joints[kinectron.ELBOWLEFT].depthX * width, body.joints[kinectron.ELBOWLEFT].depthY * height);
 
-    checkHead();
+    // checkHead();
     checkHandDistance();
 
 }
@@ -131,7 +143,7 @@ function draw() {
   for (var i = allParticles.length-1; i > -1; i--) {
     allParticles[i].move();
 
-    if (allParticles[i].vel.mag() < .7) {
+    if (allParticles[i].vel.mag() < .75) {
       allParticles.splice(i, 1);
     }
   }
@@ -152,7 +164,7 @@ function draw() {
       var p3 = allParticles[data[i+2]];
 
       // Don't draw triangle if its area is too big.
-      var distThresh = 500;
+      var distThresh = 350;
 
       if (dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
         continue;
@@ -189,26 +201,27 @@ function draw() {
 
 function checkHand(xPos, yPos) {
   allParticles.push(new Particle(xPos, yPos, maxLevel));
-
-}
-
-function checkHandDistance(){
-    var distance = dist(xRight, yRight, xLeft, yLeft);
-    console.log(distance);
-    if(distance < 300){
-        fill(0,0,255);
-        ellipse(width / 2, height / 2, 50, 50);
-    }
+  console.log("xpos:" + xPos);
+  console.log("ypos:" + yPos);
 }
 
 // function checkHandDistance(){
 //     var distance = dist(xRight, yRight, xLeft, yLeft);
 //     console.log(distance);
-//     if(distance < 101){
+//     if(distance < 300){
 //         fill(0,0,255);
 //         ellipse(width / 2, height / 2, 50, 50);
 //     }
 // }
+
+function checkHandDistance(){
+    var distance = dist(xRight, yRight, xLeft, yLeft);
+    console.log(distance);
+    if(distance < 101){
+        fill(0,0,255);
+        ellipse(width / 2, height / 2, 50, 50);
+    }
+}
 
 /*function createbubble(bId) {
     let r = 0;

@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.44.6";
+let kinectronIpAddress = "145.93.181.150";
 
 // declare kinectron
 let kinectron = null;
@@ -17,17 +17,24 @@ var yLeft;
 
 var handsClose = [];
 
+var img;
+
+/*function preload() {
+    img = loadImage("assets/hand.jpg");
+}*/
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.128.202");
+  kinectron = new Kinectron("145.93.82.36");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(RGB, 100);
+  colorMode(RGB, 100, 100, 100, 10);
+
+
 }
 
 function drawBody(body){
@@ -40,7 +47,7 @@ function drawBody(body){
       if(i == 3){
         xHead = body.joints[i].depthX * width;
         yHead = body.joints[i].depthY * height;
-      }
+    }
     }
 
     if(i == 11 || i == 7){
@@ -64,15 +71,15 @@ var allParticles = [];
 var globalHue = 120;
 var spawnPerFrame = 3;
 var mouseSize = 120;
-
 let bubbles = [];
+var bubblesArr = [];
 
 function Particle(x, y) {
   this.lastPos = new p5.Vector(x, y);
   this.pos = new p5.Vector(x, y);
   this.vel = new p5.Vector(0, 0);
   this.acc = new p5.Vector(0, 0);
-  this.size = random(2, 20);
+  this.size = random(2, 15);
   this.h = globalHue;
 }
 
@@ -83,10 +90,6 @@ function draw() {
   fill(0, 5);
   rect(0, 0, width, height);
 
-
-    for (let i = 0; i < bubbles.length; i++) {
-      bubbles[i].show();
-    }
 
   for (var i = 0; i < spawnPerFrame; i++) {
   	allParticles.push(new Particle(random(width), 0));
@@ -115,8 +118,9 @@ function draw() {
     allParticles[i].pos.add(allParticles[i].vel);
     allParticles[i].acc.mult(0);
 
-    stroke(allParticles[i].h, 360, 360);
-    strokeWeight(allParticles[i].size);
+    stroke(allParticles[i].h, 100, 200);
+    //strokeWeight(allParticles[i].size);
+      strokeWeight(2);
     line(allParticles[i].lastPos.x, allParticles[i].lastPos.y,
          allParticles[i].pos.x, allParticles[i].pos.y);
 
@@ -134,11 +138,12 @@ function draw() {
 }
 
 function checkHandDistance(body){
+
+
   var bodyDouble = false;
   var distance = dist(xRight, yRight, xLeft, yLeft);
-  // console.log(body);
-  // console.log(distance);
-  if(distance < 300){
+
+  if(distance < 150){
     for(var i = 0; i < handsClose.length; i++){
       if(handsClose[i] == body.trackingId){
         bodyDouble = true;
@@ -148,9 +153,9 @@ function checkHandDistance(body){
     if(bodyDouble == false){
       handsClose.push(body.trackingId);
       console.log("added body");
-      createbubble();
-
+      createbubble(body.trackingId);
     }
+
   }
   else{
     var index = handsClose.indexOf(body.trackingId);
@@ -160,7 +165,11 @@ function checkHandDistance(body){
     }
   }
 
-  if(handsClose.length > 1){
+  for (let i = 0; i < bubbles.length; i++) {
+    bubbles[i].showTheBubble(body.trackingId, distance);
+  }
+
+  if(handsClose.length > 3){
     spawnPerFrame = 1;
   }
   else{
@@ -168,34 +177,65 @@ function checkHandDistance(body){
   }
 }
 
-function createbubble() {
+function createbubble(bId) {
     let r = 0;
-    let b = new Bubble(xRight, yRight, r);
+    let b = new Bubble(xRight, yRight, r, bId);
 
     bubbles.push(b);
 }
 
 
 class Bubble {
-  constructor(x, y, r) {
+  constructor(x, y, r, bId) {
     this.x = x;
     this.y = y;
     this.r = r;
+    this.bId = bId;
   }
 
-  show() {
+  /*show() {
     //stroke(255);
     //strokeWeight(4);
     //noFill();
-      fill(250, 200, 200);
+
 
     ellipse(this.x, this.y, this.r * 2);
     if(this.r < 100){
-        this.r = this.r + 1;
+        this.r = this.r + 2;
     }
-    fill(0);
+    //fill(0, 5);
     text(this.r, this.x-9, this.y+2);
     // console.log(this.r);
+  }*/
+
+  showTheBubble(bodyId, curDis){
+    if(bodyId == this.bId){
+      fill(20, 20);
+      ellipse(this.x, this.y, this.r * 2);
+      //image(img, this.x, this.y);
+
+      if(curDis < 150 && this.r < 101){
+        this.r = this.r + 25;
+      }
+
+      if(curDis > 150 && this.r > 0){
+            this.r = this.r - 20;
+      }
+
+        if(this.r < 0 && curDis > 150){
+            for(var i = 0; i < bubbles.length; i++){
+                if(bubbles[i] == this){
+                    bubbles.splice(i, 1);
+                }
+            }
+        }
+
+
+        //fill(0);
+
+     // var col = map(this.r, 0, 500, 0, 100);
+      //text(this.r, this.x-9, this.y+2);
+    }
 
   }
 }

@@ -101,6 +101,9 @@ class bodyExtra {
     this.b = b;
   }
 }
+checkHand(0, 0, 255, 255, 255);
+// checkHand(width, height, 255, 255, 255);
+// checkHand(0, 0, 255, 255, 255);
 
 function drawBody(body){
 

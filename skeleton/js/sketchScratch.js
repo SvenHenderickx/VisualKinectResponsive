@@ -27,7 +27,7 @@ function setup() {
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(RGB, 255);
+  colorMode(RGB, 50);
 }
 
 function drawBody(body){
@@ -61,7 +61,7 @@ function drawBody(body){
 // Rain ~!!!!
 
 var allParticles = [];
-var globalHue = 120;
+var globalHue = 300;
 var spawnPerFrame = 3;
 var mouseSize = 120;
 let bubbles = [];
@@ -70,8 +70,8 @@ var bubblesArr = [];
 function Particle(x, y) {
   this.lastPos = new p5.Vector(x, y);
   this.pos = new p5.Vector(x, y);
-  this.vel = new p5.Vector(0, 0);
-  this.acc = new p5.Vector(0, 0);
+  this.vel = new p5.Vector(0, 2);
+  this.acc = new p5.Vector(0, 2);
   this.size = random(2, 20);
   this.h = globalHue;
 }
@@ -145,9 +145,12 @@ function checkHandDistance(body){
     if(bodyDouble == false){
       handsClose.push(body.trackingId);
       console.log("added body");
-      createbubble(body.trackingId);
+      // createbubble(body.trackingId);
     }
 
+    if(mouseSize < 600){
+      mouseSize = mouseSize + 5;
+    }
   }
   else{
     var index = handsClose.indexOf(body.trackingId);
@@ -155,17 +158,21 @@ function checkHandDistance(body){
       handsClose.splice(index, 1);
       console.log("removed body");
     }
-  }
 
-  for (let i = 0; i < bubbles.length; i++) {
-    bubbles[i].showTheBubble(body.trackingId, distance);
+    if(mouseSize > 120){
+      mouseSize = mouseSize - 5;
+    }
+
   }
+  // for (let i = 0; i < bubbles.length; i++) {
+  //   bubbles[i].showTheBubble(body.trackingId, distance);
+  // }
 
   if(handsClose.length > 0){
-    spawnPerFrame = 1;
+    spawnPerFrame = 4;
   }
   else{
-    spawnPerFrame = 3;
+    spawnPerFrame = 7;
   }
 }
 
@@ -224,8 +231,8 @@ class Bubble {
 
       }
 
-      fill(0);
-      text(this.r, this.x-9, this.y+2);
+      // fill(0);
+      // text(this.r, this.x-9, this.y+2);
     }
 
 

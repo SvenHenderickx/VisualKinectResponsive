@@ -88,7 +88,7 @@ function setup() {
 
   textAlign(CENTER);
 
-  background(0);
+
 }
 
 var bodyInfo = [];
@@ -111,9 +111,9 @@ function drawBody(body){
 
     var isAdded = false;
 
-    var newRed = random(255);
-    var newGreen = random(255);
-    var newBlue = random(255);
+    var newRed = random(200, 255);
+    var newGreen = random(200, 255);
+    var newBlue = random(200, 255);
 
     for(var i = 0; i < bodyInfo.length; i++){
       if(bodyInfo[i].id == body.trackingId){
@@ -121,7 +121,7 @@ function drawBody(body){
         newRed = i.r;
         newGreen = i.g;
         newBlue = i.b;
-        console.log(bodyInfo[i]);
+        //console.log(bodyInfo[i]);
       }
       // console.log(bodyInfo[i].id);
     }
@@ -145,10 +145,19 @@ function drawBody(body){
 var thresholdNew = .75;
 var distThresh = 350;
 
+
+
+
 function draw() {
   // Create fade effect.
-  noStroke();
-  fill(0, 30);
+    var t = 63;      //variable for later usage opacity
+    clear();
+    background(0, t);
+
+
+
+    noStroke();
+  fill(0, 60);
   rect(0, 0, width, height);
 
   // Move and spawn particles.
@@ -198,6 +207,7 @@ function draw() {
       } else {
         noFill();
         stroke(p1.r, p1.g, p1.b);
+        strokeWeight(2);
       }
 
       triangle(p1.pos.x, p1.pos.y,

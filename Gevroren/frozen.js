@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.181.150";
+let kinectronIpAddress = "145.93.45.1";
 
 // declare kinectron
 let kinectron = null;
@@ -78,7 +78,7 @@ function Particle(x, y, level, r, g, b) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  kinectron = new Kinectron("145.93.81.21");
+  kinectron = new Kinectron("145.93.45.1");
 
   kinectron.makeConnection();
 
@@ -102,7 +102,7 @@ class bodyExtra {
   }
 }
 checkHand(0, 0, 255, 255, 255);
-// checkHand(width, height, 255, 255, 255);
+checkHand(width, height, 255, 255, 255);
 // checkHand(0, 0, 255, 255, 255);
 
 function drawBody(body){
@@ -143,7 +143,7 @@ function drawBody(body){
 }
 
 var thresholdNew = .75;
-var distThresh;
+var distThresh = 350;
 
 function draw() {
   // Create fade effect.
@@ -177,7 +177,7 @@ function draw() {
       var p3 = allParticles[data[i+2]];
 
       // Don't draw triangle if its area is too big.
-      distThresh = 350;
+      // distThresh = 350;
 
       if (dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
         continue;
@@ -231,12 +231,12 @@ function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
     if(distance > 800 && distance < 1200){
         fill(0,0,255);
         ellipse(width / 2, height / 2, 50, 50);
-        thresholdNew = .6;
-        distThresh = 1000;
+        // thresholdNew = .6;
+        // distThresh = 500;
     }
     else{
-      thresholdNew = .75;
-      distThresh = 350;
+      // thresholdNew = .75;
+      // distThresh = 350;
     }
 }
 

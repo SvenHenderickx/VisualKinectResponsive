@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS document */
+
+@font-face {
+	font-family: OstrichsansBlack;
+	src: url(OstrichSans-Black.otf);
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family:'AdventproReg', 'helvetica', sans-serif;
+    font-size: 24px;
+    height: 100%;
+}
+
+* { box-sizing: border-box; }
+.video-background {
+  background: #FFFFFF;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -99;
+}
+
+.gridRect{
+	width: 50%;
+	height: 28.125vw;
+	position: relative;
+	float: left;
+	overflow: hidden;
+}
+
+.video-foreground,
+.video-background iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+  .video-foreground { height: 300%; top: -100%; }
+}
+@media (max-aspect-ratio: 16/9) {
+  .video-foreground { width: 300%; left: -100%; }
+}
+@media all and (max-width: 600px) {
+.vid-info { width: 50%; padding: .5rem; }
+.vid-info h1 { margin-bottom: .2rem; }
+}
+@media all and (max-width: 500px) {
+.vid-info .acronym { display: none; }
+}
+
+#towebsite{
+    float: right;
+    background-image: url(../images/towebsite.svg);
+    background-size: cover;
+    margin-right: 40px;
+    margin-top: 40px;
+    height: 100px;
+    width: 200px;
+}
+
+#mutebuttonpos{
+    position: absolute;
+    float: left;
+    height: 50px;
+    margin-left: 40px;
+    margin-top: 40px;
+}
+
+#mutebutton{
+    height: 50px;
+    width: 50px;
+    background-image: url(../images/muted.svg);
+    background-size: cover;
+    cursor: pointer;
+}

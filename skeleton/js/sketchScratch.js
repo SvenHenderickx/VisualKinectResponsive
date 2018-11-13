@@ -60,7 +60,7 @@ function drawBody(body){
 // Rain ~!!!!
 
 var allParticles = [];
-var globalHue = 300;
+var globalHue = 0;
 var spawnPerFrame = 3;
 var mouseSize = 120;
 let bubbles = [];
@@ -69,9 +69,9 @@ var bubblesArr = [];
 function Particle(x, y) {
   this.lastPos = new p5.Vector(x, y);
   this.pos = new p5.Vector(x, y);
-  this.vel = new p5.Vector(0, 2);
-  this.acc = new p5.Vector(0, 2);
-  this.size = random(2, 20);
+  this.vel = new p5.Vector(0, 0);
+  this.acc = new p5.Vector(0, 0);
+  this.size = random(3, 20);
   this.h = globalHue;
 }
 
@@ -80,8 +80,8 @@ function draw() {
   noStroke();
   fill(0, 5);
   rect(0, 0, width, height);
-  var t = 10;      //variable for later usage opacity
-      clear();
+  var t = 0;      //variable for later usage opacity
+      // clear();
       background(0, t);
 
   for (var i = 0; i < spawnPerFrame; i++) {
@@ -123,10 +123,10 @@ function draw() {
     }
   }
 
-  globalHue += 0.015;
-  if (globalHue > 360) {
-    globalHue = 0;
-  }
+  // globalHue += 0.015;
+  // if (globalHue > 360) {
+  //   globalHue = 0;
+  // }
 }
 
 function checkHandDistance(body){
@@ -147,7 +147,7 @@ function checkHandDistance(body){
       console.log("added body");
       // createbubble(body.trackingId);
     }
-
+    clear();
     if(mouseSize < 600){
       mouseSize = mouseSize + 5;
     }
@@ -169,10 +169,10 @@ function checkHandDistance(body){
   // }
 
   if(handsClose.length > 0){
-    spawnPerFrame = 10;
+    spawnPerFrame = 6;
   }
   else{
-    spawnPerFrame = 6;
+    spawnPerFrame = 2;
   }
 }
 

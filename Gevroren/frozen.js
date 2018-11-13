@@ -2,7 +2,7 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-let kinectronIpAddress = "145.93.80.245";
+let kinectronIpAddress = "145.93.82.29";
 
 // declare kinectron
 let kinectron = null;
@@ -36,7 +36,7 @@ Site:
 */
 
 var allParticles = [];
-var maxLevel = 5;
+var maxLevel = 1;
 var useFill = false;
 
 var data = [];
@@ -59,7 +59,7 @@ function Particle(x, y, level, r, g, b) {
     this.life++;
 
     // Add friction.
-    this.vel.mult(0.9);
+    this.vel.mult(0.80);
 
     this.pos.add(this.vel);
 
@@ -78,7 +78,7 @@ function Particle(x, y, level, r, g, b) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  kinectron = new Kinectron("145.93.80.245");
+  kinectron = new Kinectron("145.93.82.29");
 
   kinectron.makeConnection();
 
@@ -111,9 +111,9 @@ function drawBody(body){
 
     var isAdded = false;
 
-    var newRed = random(200, 255);
-    var newGreen = random(200, 255);
-    var newBlue = random(200, 255);
+    var newRed = 255;
+    var newGreen = 255;
+    var newBlue = 0;
 
     for(var i = 0; i < bodyInfo.length; i++){
       if(bodyInfo[i].id == body.trackingId){
@@ -142,11 +142,8 @@ function drawBody(body){
 
 }
 
-var thresholdNew = .75;
+var thresholdNew = .70;
 var distThresh;
-
-
-
 
 function draw() {
   // Create fade effect.
@@ -186,7 +183,7 @@ function draw() {
       var p3 = allParticles[data[i+2]];
 
       // Don't draw triangle if its area is too big.
-      distThresh = 350;
+      distThresh = 400;
 
       if (dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
         continue;
@@ -238,15 +235,15 @@ function checkHand(xPos, yPos, r, g, b) {
 function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
     var distance = dist(xRightIn, yRightIn, xLeftIn, yLeftIn);
     // console.log(distance);
-    if(distance > 800 && distance < 1200){
-        fill(0,0,255);
-        ellipse(width / 2, height / 2, 50, 50);
-        thresholdNew = .6;
+    if(distance < 400){
+        fill(255,255,0);
+        ellipse(width / 2, height / 2, 100, 100);
+        thresholdNew = 0.70;
         distThresh = 1000;
     }
     else{
-      thresholdNew = .75;
-      distThresh = 350;
+      thresholdNew = .70;
+      distThresh = 400;
     }
 }
 

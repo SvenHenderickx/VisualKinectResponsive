@@ -27,11 +27,10 @@ function setup() {
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(RGB, 50);
+  colorMode(RGB, 255);
 }
 
 function drawBody(body){
-  // background(0);
   for(var i = 0; i < body.joints.length; i++){
 
     if(i == 3){
@@ -78,11 +77,12 @@ function Particle(x, y) {
 
 
 function draw() {
-
   noStroke();
   fill(0, 5);
   rect(0, 0, width, height);
-
+  var t = 63;      //variable for later usage opacity
+      clear();
+      background(0, t);
 
   for (var i = 0; i < spawnPerFrame; i++) {
   	allParticles.push(new Particle(random(width), 0));

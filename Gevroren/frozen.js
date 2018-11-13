@@ -2,7 +2,11 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
+<<<<<<< HEAD
 let kinectronIpAddress = "145.93.82.29";
+=======
+let kinectronIpAddress = "145.93.45.1";
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
 
 // declare kinectron
 let kinectron = null;
@@ -78,7 +82,11 @@ function Particle(x, y, level, r, g, b) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+<<<<<<< HEAD
   kinectron = new Kinectron("145.93.82.29");
+=======
+  kinectron = new Kinectron("145.93.45.1");
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
 
   kinectron.makeConnection();
 
@@ -102,7 +110,7 @@ class bodyExtra {
   }
 }
 checkHand(0, 0, 255, 255, 255);
-// checkHand(width, height, 255, 255, 255);
+checkHand(width, height, 255, 255, 255);
 // checkHand(0, 0, 255, 255, 255);
 
 function drawBody(body){
@@ -142,8 +150,13 @@ function drawBody(body){
 
 }
 
+<<<<<<< HEAD
 var thresholdNew = .70;
 var distThresh;
+=======
+var thresholdNew = .75;
+var distThresh = 350;
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
 
 function draw() {
   // Create fade effect.
@@ -183,7 +196,11 @@ function draw() {
       var p3 = allParticles[data[i+2]];
 
       // Don't draw triangle if its area is too big.
+<<<<<<< HEAD
       distThresh = 400;
+=======
+      // distThresh = 350;
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
 
       if (dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y) > distThresh) {
         continue;
@@ -235,6 +252,7 @@ function checkHand(xPos, yPos, r, g, b) {
 function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
     var distance = dist(xRightIn, yRightIn, xLeftIn, yLeftIn);
     // console.log(distance);
+<<<<<<< HEAD
     if(distance < 400){
         fill(255,255,0);
         ellipse(width / 2, height / 2, 100, 100);
@@ -244,6 +262,17 @@ function checkHandDistance(xRightIn, yRightIn, xLeftIn, yLeftIn){
     else{
       thresholdNew = .70;
       distThresh = 400;
+=======
+    if(distance > 800 && distance < 1200){
+        fill(0,0,255);
+        ellipse(width / 2, height / 2, 50, 50);
+        // thresholdNew = .6;
+        // distThresh = 500;
+    }
+    else{
+      // thresholdNew = .75;
+      // distThresh = 350;
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
     }
 }
 

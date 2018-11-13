@@ -78,7 +78,7 @@ function Particle(x, y, level, r, g, b) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  kinectron = new Kinectron("145.93.45.1");
+  kinectron = new Kinectron("145.93.130.117");
 
   kinectron.makeConnection();
 

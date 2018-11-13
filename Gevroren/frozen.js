@@ -2,7 +2,11 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
+<<<<<<< HEAD
+let kinectronIpAddress = "145.93.82.29";
+=======
 let kinectronIpAddress = "145.93.45.1";
+>>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
 
 // declare kinectron
 let kinectron = null;
@@ -36,7 +40,7 @@ Site:
 */
 
 var allParticles = [];
-var maxLevel = 5;
+var maxLevel = 1;
 var useFill = false;
 
 var data = [];
@@ -59,7 +63,7 @@ function Particle(x, y, level, r, g, b) {
     this.life++;
 
     // Add friction.
-    this.vel.mult(0.9);
+    this.vel.mult(0.80);
 
     this.pos.add(this.vel);
 
@@ -111,9 +115,9 @@ function drawBody(body){
 
     var isAdded = false;
 
-    var newRed = random(200, 255);
-    var newGreen = random(200, 255);
-    var newBlue = random(200, 255);
+    var newRed = 255;
+    var newGreen = 255;
+    var newBlue = 0;
 
     for(var i = 0; i < bodyInfo.length; i++){
       if(bodyInfo[i].id == body.trackingId){
@@ -144,9 +148,6 @@ function drawBody(body){
 
 var thresholdNew = .75;
 var distThresh = 350;
-
-
-
 
 function draw() {
   // Create fade effect.

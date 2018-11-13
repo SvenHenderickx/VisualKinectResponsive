@@ -80,7 +80,7 @@ function draw() {
   noStroke();
   fill(0, 5);
   rect(0, 0, width, height);
-  var t = 63;      //variable for later usage opacity
+  var t = 10;      //variable for later usage opacity
       clear();
       background(0, t);
 
@@ -169,10 +169,10 @@ function checkHandDistance(body){
   // }
 
   if(handsClose.length > 0){
-    spawnPerFrame = 4;
+    spawnPerFrame = 10;
   }
   else{
-    spawnPerFrame = 7;
+    spawnPerFrame = 6;
   }
 }
 

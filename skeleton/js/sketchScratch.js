@@ -20,14 +20,14 @@ var handsClose = [];
 function setup() {
   createCanvas(1920,1080);
 
-  kinectron = new Kinectron("145.93.82.36");
+  kinectron = new Kinectron("145.93.130.117");
 
   kinectron.makeConnection();
 
   kinectron.startTrackedBodies(drawBody);
 
   // createCanvas(windowWidth, windowHeight);
-  colorMode(RGB, 100);
+  colorMode(RGB, 255);
 }
 
 function drawBody(body){
@@ -130,13 +130,13 @@ function draw() {
 }
 
 function checkHandDistance(body){
-
-
   var bodyDouble = false;
   var distance = dist(xRight, yRight, xLeft, yLeft);
 
-  if(distance < 150){
+  if(distance < 1200 && distance > 800){
     for(var i = 0; i < handsClose.length; i++){
+      console.log(handsClose[i] + " - " + body.trackingId);
+
       if(handsClose[i] == body.trackingId){
         bodyDouble = true;
       }
@@ -161,7 +161,7 @@ function checkHandDistance(body){
     bubbles[i].showTheBubble(body.trackingId, distance);
   }
 
-  if(handsClose.length > 3){
+  if(handsClose.length > 0){
     spawnPerFrame = 1;
   }
   else{
@@ -202,11 +202,12 @@ class Bubble {
 
   showTheBubble(bodyId, curDis){
     if(bodyId == this.bId){
-      fill(250, 200, 200);
-      ellipse(this.x, this.y, this.r * 2);
+      // fill(250, 200, 200);
+      // ellipse(this.x, this.y, this.r * 2);
 
-      if(this.r < 101 && curDis < 150){
-        this.r++;
+      if(curDis > 800 && curDis < 1200 && mouseSize < 600){
+        // this.r++;
+        mouseSize = mouseSize + 5;
       }
       else{
         if(this.r < 0){
@@ -216,12 +217,17 @@ class Bubble {
             }
           }
         }
-        this.r--;
+        // this.r--;
+        if(mouseSize > 120){
+          mouseSize = mouseSize - 5;
+        }
+
       }
 
       fill(0);
       text(this.r, this.x-9, this.y+2);
     }
+
 
   }
 }

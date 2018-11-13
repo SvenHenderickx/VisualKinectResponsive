@@ -4,9 +4,137 @@
     <script src="../libraries/p5.dom.js" type="text/javascript"></script>
     <script src="../libraries/kinectron.bundle.js" type="text/javascript"></script>
     <script src="./js/sketchScratch.js" type="text/javascript"></script>
-        <!--<script src="./js/handsappear.js" type="text/javascript"></script>-->
-		<!-- <script src="./js/newSketch.js" type="text/javascript"></script> -->
-  </head>
-  <body>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	  <script async src="https://www.youtube.com/iframe_api"></script>
+	  <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
+
+	  <!-- This line removes any default padding and style.
+	       You might only need one of these values set. -->
+	  <style> body {padding: 0; margin: 0;} </style>
+	</head>
+
+	<body>
+
+	<div class="video-background">
+
+	  <div class="gridRect">
+	    <div id = 'ytplayer1'></div>
+	  </div>
+
+	  <div class="gridRect">
+	    <div id = 'ytplayer2'></div>
+	  </div>
+
+	  <div class="gridRect">
+	    <div id = 'ytplayer3'></div>
+	  </div>
+
+	  <div class="gridRect">
+	    <!--<div class="video-foreground">
+	    -->
+	    <div id = 'ytplayer4'>
+	      <!--<iframe id="ytplayer4"  src="http://www.youtube.com/embed/S42AKIK_h2g?rel=0&autoplay=0&showinfo=0&controls=0&loop=1&playlist=S42AKIK_h2g&enablejsapi=1" frameborder="0"></iframe>-->
+	    </div>
+	  </div>
+
+	</div>
+	<script>
+
+	    /* var tag = document.createElement('script');
+
+	         tag.src = "//www.youtube.com/iframe_api";
+	         var firstScriptTag = document.getElementsByTagName('script')[0];
+	         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
+
+
+	    var player1;
+	    var player2;
+	    var player3;
+	    var player4;
+	    var playerConfig = [];
+
+	    var videos =['mMD63t-W0Os', 'yr5x_NgU1aE', 'DZBN8FuBD7s', 'RqaqRPJpu9g'];
+
+	    var startSeconds = 1;  // set your own video start time when loop play
+	    var endSeconds = 20;   // set your own video end time when loop play
+
+
+	    playerConfig = {
+	        playerVars: {
+	            autoplay: 1,
+	            controls: 0,            // Show pause/play buttons in player
+	            showinfo: 1,            // Hide the video title
+	            modestbranding: true,      // Hide the Youtube Logo
+	            fs: 1, // Hide the full screen button
+	            cc_load_policy: 0,      // Hide closed captions
+	            iv_load_policy: 3,      // Hide the Video Annotations
+
+	            start: startSeconds,
+	            end: endSeconds
+
+	        }
+	    };
+
+	    for (i = 0; i < videos.length; i++) {
+	        playerConfig[i] = {
+	            videoId: videos[i],
+	            playlist: videos[i],
+	            events: {
+	                'onReady': onPlayerReady,
+	                'onStateChange': onStateChange // reference to Iframe API
+
+	            }
+	        };}
+
+	    function onYouTubeIframeAPIReady() {
+	        player1 = new YT.Player('ytplayer1', playerConfig[0]);
+
+	        player2 = new YT.Player('ytplayer2', playerConfig[1]);
+
+	        player3 = new YT.Player('ytplayer3', playerConfig[2]);
+
+	        player4 = new YT.Player('ytplayer4', playerConfig[3]);
+
+	    }
+
+	    function onStateChange(state) {
+	        if (state.data === YT.PlayerState.ENDED) {
+	            player1.loadVideoById({
+	                videoId: videos[0],
+	                startSeconds: startSeconds,
+	                endSeconds: endSeconds
+
+	            });
+	            player2.loadVideoById({
+	                videoId: videos[1],
+	                startSeconds: startSeconds,
+	                endSeconds: endSeconds
+
+	            });
+	            player3.loadVideoById({
+	                videoId: videos[2],
+	                startSeconds: startSeconds,
+	                endSeconds: endSeconds
+
+	            });
+	            player4.loadVideoById({
+	                videoId: videos[3],
+	                startSeconds: startSeconds,
+	                endSeconds: endSeconds
+
+	            });
+	        }
+	    }
+
+
+	    function onPlayerReady(event) {
+	        event.target.playVideo();
+	        event.target.setVolume(0);
+	    }
+
+
+
+	</script>
 	</body>
 </html>

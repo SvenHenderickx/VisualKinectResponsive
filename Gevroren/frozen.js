@@ -2,11 +2,10 @@
 let liveData = true;
 
 // fill in kinectron ip address here ie. "127.16.231.33"
-<<<<<<< HEAD
+
 let kinectronIpAddress = "145.93.82.29";
-=======
-let kinectronIpAddress = "145.93.45.1";
->>>>>>> 67da376cad49ae182da8db8632f74fc7d8054ff7
+
+
 
 // declare kinectron
 let kinectron = null;
@@ -82,7 +81,7 @@ function Particle(x, y, level, r, g, b) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  kinectron = new Kinectron("145.93.130.117");
+  kinectron = new Kinectron("145.93.44.214");
 
   kinectron.makeConnection();
 
@@ -105,8 +104,8 @@ class bodyExtra {
     this.b = b;
   }
 }
-checkHand(0, 0, 255, 255, 255);
-checkHand(width, height, 255, 255, 255);
+// checkHand(0, 0, 255, 255, 255);
+// checkHand(width, height, 255, 255, 255);
 // checkHand(0, 0, 255, 255, 255);
 
 function drawBody(body){
@@ -146,12 +145,12 @@ function drawBody(body){
 
 }
 
-var thresholdNew = .75;
-var distThresh = 350;
+var thresholdNew = .6;
+var distThresh = 600;
 
 function draw() {
   // Create fade effect.
-    var t = 63;      //variable for later usage opacity
+    var t = 0;      //variable for later usage opacity
     clear();
     background(0, t);
 
